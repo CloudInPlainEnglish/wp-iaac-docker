@@ -3,31 +3,31 @@ services:
   db:
     image: mysql:5.7
     volumes:
-      - db_data:/var/lib/mysql
+      - db:/var/lib/mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: somewordpress
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
 
   wordpress:
     depends_on:
       - db
     image: wordpress:latest
     ports:
-      - 8000:80
+      - 8080:80
     restart: always
     environment:
-      WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_NAME: wordpress
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: exampledb
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
       WORDPRESS_TABLE_PREFIX: "wp_"
       WORDPRESS_DEBUG: 1
     # vstm: add shared volume
     volumes:
-      - wp_data:/var/www/html
+      - wordpress:/var/www/html
 
   wordpress-cli:
     depends_on:
@@ -37,19 +37,26 @@ services:
     # vstm: This is required to run wordpress-cli with the same
     # user-id as wordpress. This way there are no permission problems
     # when running the cli
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: exampledb
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_TABLE_PREFIX: "wp_"
     user: xfs
     # vstm: The sleep 10 is required so that the command is run after
     # mysql is initialized. Depending on your machine this might take
     # longer or it can go faster.
     #CIPE: Set Entry point to WP CLI command. Runins --info command and closes unless command overrides by using docker-compose run
     #Example command "docker-compose run -rm my-wpcli post list"
-    Entrypoint: wp 
-    command:"--info"
+    entrypoint: wp 
+    command: "--info"
     # vstm: add shared volume
     volumes:
-      - wp_data:/var/www/html
+      - wordpress:/var/www/html
 
 volumes:
-  db_data:
+  db:
   # vstm: add shared volume
-  wp_data:
+  wordpress:
+  
