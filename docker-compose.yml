@@ -7,9 +7,9 @@ services:
     restart: always
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
-      MYSQL_DATABASE: exampledb
-      MYSQL_USER: exampleuser
-      MYSQL_PASSWORD: examplepass
+      MYSQL_DATABASE: $MySQLDB-Name
+      MYSQL_USER: $MySQL-User
+      MYSQL_PASSWORD: $MySQL-PW
 
   wordpress:
     depends_on:
@@ -20,9 +20,9 @@ services:
     restart: always
     environment:
       WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_NAME: exampledb
-      WORDPRESS_DB_USER: exampleuser
-      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: $MySQLDB-Name
+      WORDPRESS_DB_USER: $MySQL-User
+      WORDPRESS_DB_PASSWORD: $MySQL-PW
       WORDPRESS_TABLE_PREFIX: "wp_"
       WORDPRESS_DEBUG: 1
     # vstm: add shared volume
@@ -39,9 +39,9 @@ services:
     # when running the cli
     environment:
       WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_NAME: exampledb
-      WORDPRESS_DB_USER: exampleuser
-      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: $MySQL-Name
+      WORDPRESS_DB_USER: $MySQL-User
+      WORDPRESS_DB_PASSWORD: $MySQL-PW
       WORDPRESS_TABLE_PREFIX: "wp_"
     user: xfs
     # vstm: The sleep 10 is required so that the command is run after
@@ -60,3 +60,5 @@ volumes:
   # vstm: add shared volume
   wordpress:
   
+  
+  #pending items clarify XFS and mysql random root, also check debug setting.
