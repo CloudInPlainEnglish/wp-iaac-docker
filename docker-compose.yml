@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
-      MYSQL_DATABASE: $MySQLDB-Name
+      MYSQL_DATABASE: $MySQL-DB-Name
       MYSQL_USER: $MySQL-User
       MYSQL_PASSWORD: $MySQL-PW
 
@@ -20,7 +20,7 @@ services:
     restart: always
     environment:
       WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_NAME: $MySQLDB-Name
+      WORDPRESS_DB_NAME: $MySQL-DB-Name
       WORDPRESS_DB_USER: $MySQL-User
       WORDPRESS_DB_PASSWORD: $MySQL-PW
       WORDPRESS_TABLE_PREFIX: "wp_"
@@ -39,7 +39,7 @@ services:
     # when running the cli
     environment:
       WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_NAME: $MySQL-Name
+      WORDPRESS_DB_NAME: $MySQL-DB-Name
       WORDPRESS_DB_USER: $MySQL-User
       WORDPRESS_DB_PASSWORD: $MySQL-PW
       WORDPRESS_TABLE_PREFIX: "wp_"
